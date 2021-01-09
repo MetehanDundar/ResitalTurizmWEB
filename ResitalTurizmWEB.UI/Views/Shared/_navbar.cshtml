@@ -1,0 +1,71 @@
+﻿
+<div class="tm-main-content" id="top">
+    <div class="tm-top-bar-bg"></div>
+    <div class="tm-top-bar" >
+        <div class="container">
+            <div class="row">
+                <nav class="navbar navbar-expand-lg narbar-light">
+                    <a class="navbar-brand mr-auto" href="/home/index">
+                        <img src="~/template/img/logo.png" alt="Site logo">
+                        Resital
+                    </a>
+                    <button type="button" id="nav-toggle" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div id="mainNav" class="collapse navbar-collapse tm-bg-white">
+                        <ul class="navbar-nav m-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/home/index">Anasayfa <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/otels" class="nav-link">Otel</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/home/gemi" class="nav-link">Gemi</a>
+                            </li>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Admin
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a asp-controller="admin" asp-action="otellist" class="dropdown-item"><b>Otel</b></a>
+                                        <a asp-controller="admin" asp-action="rolelist" class="dropdown-item"><b>Rol</b></a>
+                                        <a asp-controller="admin" asp-action="userlist" class="dropdown-item"><b>Kullanıcı</b></a>
+                                        <a asp-controller="rooms" asp-action="index" class="dropdown-item"><b>Odalar</b></a>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="account" asp-action="Manage" class="nav-link">@User.Identity.Name</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="account" asp-action="Logout" class="nav-link">Çıkış</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="account" asp-action="Login" class="nav-link">Giriş</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="account" asp-action="Register" class="nav-link">Kayıt Ol</a>
+                                </li>
+                            }
+
+
+
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div> 
+    </div> 
+</div>

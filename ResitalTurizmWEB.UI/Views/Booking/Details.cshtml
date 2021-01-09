@@ -1,0 +1,58 @@
+﻿@model Booking
+
+@{ ViewData["Title"] = "Details"; }
+
+<div class="container">
+    <h2>Details</h2>
+    <div class="row">
+        <div>
+            <h4>Booking</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.StartDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EndDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.IsActive)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserId)
+                </dd>
+                @*<dt>
+                    @Html.DisplayNameFor(model => model.OtelId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.OtelId)
+                </dd>*@
+                <dt>
+                    @Html.DisplayNameFor(model => model.RoomId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RoomId)
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+
+</div>
+
+

@@ -1,0 +1,26 @@
+﻿@model ResitalTurizmWEB.UI.Models.OtelListViewModel
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            @await Component.InvokeAsync("Categories")
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                @foreach (var otel in Model.Oteller)
+                {
+                    <div class="col-md-4">
+                        @await Html.PartialAsync("_otel", otel)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

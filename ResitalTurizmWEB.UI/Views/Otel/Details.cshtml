@@ -1,0 +1,37 @@
+﻿@model OtelDetailModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*@section Categories
+{
+    @await Component.InvokeAsync("Categories")
+}*@
+
+
+<div class="row">
+    <div class="col-md-3">
+        <img src="~/template/img/@Model.Otel.ImageUrl" class="img-fluid" />
+    </div>
+    <div class="col-md-9">
+
+        <h1 class="mb-3">@Model.Otel.OtelAdı</h1><hr>
+
+        <a asp-controller="Otel" asp-action="List" asp-route-categoryotel="@Model.Otel.OtelKategorisi" class="btn btn-link p-0 mb-3">@Model.Otel.OtelKategorisi</a> @*TODO:Kategori ismini kategori tablosundan çekemedim burada.*@
+
+        <div class="mb-3">
+            <h4 class="text-primary mb-3">
+                <i class="fas fa-lira-sign">@(Model.Otel.Fiyat + " ₺")</i> 
+            </h4>
+            <button type="submit" class="btn btn-primary btn-lg">Sepete Ekle</button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p class="p-3">@Html.Raw(Model.Otel.OtelAdres)</p>@*html.raw kısmını ckeditor ekledikte sonra ekledim. Adres bilgisi html etiketleriyle birlikte yazdırılmasın diye.*@
+    </div>
+</div>
+    
+

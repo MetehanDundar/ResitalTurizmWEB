@@ -1,0 +1,67 @@
+﻿@model OtelListViewModel
+
+@{
+    ViewData["Title"] = "OtelList";
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Admin Oteller</h1>
+        <hr />
+        <a class="btn btn-primary btn-sm" href="/admin/createotel">Otel Ekle</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td style="width:30px;">ID</td>
+                    <td style="width:100px;">Resim</td>
+                    <td style="width:150px;">OtelAdı</td>
+                    <td style="width:20px;">Fiyat</td>
+                    <td style="width:20px;">Onaylı</td>
+                    <td style="width:150px;"></td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Oteller.Count > 0)
+                {
+                    @foreach (var item in Model.Oteller)
+                    {
+                        <tr>
+                            <td>@item.OtelID</td>
+                            <td><img src="~/template/img/@item.ImageUrl" width="80" /></td>
+                            <td>@item.OtelAdı</td>
+                            <td>@item.Fiyat</td>
+                            <td>
+                                @if (item.IsApproved)
+                                {
+                                    <i class="fas fa-check-circle" style="color:green"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-times-circle" style="color:red"></i>
+                                }
+                            </td>
+                            <td>
+                                <a href="/admin/otels/@item.OtelID" class="btn btn-primary btn-sm mr-2">Düzenle</a>
+
+                                <form action="/admin/deleteotel" method="post" style="display:inline;">
+                                    <input type="hidden" name="OtelID" value="@item.OtelID" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Sil</button> @*Delete butonu form icinde olmalı ve submit zelligi olmalı*@
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        <h3>Ürün Yok</h3>
+                    </div>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

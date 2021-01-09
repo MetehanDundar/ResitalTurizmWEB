@@ -1,0 +1,68 @@
+﻿@model OtelModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@* TODO: Bu sayfayı veritabanına göre düzenle *@
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="h3">Otel Düzenle</h1> @*SEO açısından h1, grünüm olarak h3 olacak.*@
+            <hr />
+        </div>
+    </div>
+    <form asp-controller="Admin" asp-action="Edit" method="POST" enctype="multipart/form-data">
+        @*enctype server'a dosya taşımak için(ben resim upload işlemi için kullandım)*@
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" name="OtelID" value="@Model.OtelID" />
+        <div class="form-group">
+            <label asp-for="OtelAdı"></label> @*asp-for kullandıgım icin labellar arasına string yazmama gerek yok*@
+            <input class="form-control" asp-for="OtelAdı" /> @*asp-for kullandıgım icin type="text" yazmama gerek yok. id, name ve varsa value degerleri de otomatik olarak gelecek*@
+            <span asp-validation-for="OtelAdı" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fiyat"></label>
+            <input class="form-control" asp-for="Fiyat" />
+            <span asp-validation-for="Fiyat" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="OtelAdres"></label>
+            <textarea id="editor" class="form-control" asp-for="OtelAdres"></textarea>
+            <span asp-validation-for="OtelAdres" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageUrl"></label>
+            <input type="hidden" asp-for="ImageUrl" />
+            <img src="~/template/img/@Model.ImageUrl" width="80" />
+            <input type="file" name="file" />
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryID"></label>
+            <input class="form-control" asp-for="CategoryID" />
+            <span asp-validation-for="CategoryID" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="OtelKategorisi"></label>
+            <input class="form-control" asp-for="OtelKategorisi" />
+            <span asp-validation-for="OtelKategorisi" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IsApproved"></label>
+            <input class="form-control" asp-for="IsApproved" />
+        </div>
+        <button type="submit" class="btn btn-primary">Düzenle</button> @*Formu server'a submit ediyorum*@
+    </form>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js" integrity="sha512-EanukVTZc4W9tUCLnDl069Izidg49PcNRKO1upLzKt9ajq66i+bXOtlzXcIbRhb6vVEGF6BCc8wQi5T1ztCpTQ==" crossorigin="anonymous"></script>
+    <script src="https://cdn.ckeditor.com/4.15.1/standard/ckeditor.js"></script>
+
+    <script>
+        CKEDITOR.replace('editor');
+    </script>
+}
