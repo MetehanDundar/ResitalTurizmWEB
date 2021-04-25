@@ -3,26 +3,38 @@
 @{ ViewData["Title"] = "Create"; }
 
 <div class="container">
-    <h2>Create</h2>
+    <h2>Rezervasyon</h2>
     <h4 class="text-danger">@ViewBag.Status</h4>
-    <h4>Booking</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
             <form asp-action="Create">
+
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.RoomId, new { date_val = "false" })
+                @Html.HiddenFor(m => m.OtelId, new { date_val = "false" })
+                @Html.HiddenFor(m => m.UserId, new { date_val = "false" })
+
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="OtelId" />
                 <div class="form-group">
                     <label asp-for="StartDate" class="control-label"></label>
-                    <input type="date" asp-for="StartDate" class="form-control" />
+                    <input type="date" asp-for="StartDate" class="form-control" onchange="GetPrice()" id="StartDate" />
                     <span asp-validation-for="StartDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="EndDate" class="control-label"></label>
-                    <input type="date" asp-for="EndDate" class="form-control" />
+                    <input type="date" asp-for="EndDate" class="form-control" onchange="GetPrice()" id="EndDate" />
                     <span asp-validation-for="EndDate" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div id="price">
+
+                </div>
+                @*<div class="form-group">
+                <label asp-for="Fiyat" class="control-label"></label>
+                <input type="text" asp-for="Fiyat" class="form-control" />
+                <span asp-validation-for="Fiyat" class="text-danger"></span>
+                </div>*@
+                    @*<div class="form-group">
                     <label asp-for="UserId" class="control-label"></label>
                     <input type="text" asp-for="UserId" class="form-control" />
                 </div>
@@ -30,18 +42,32 @@
                     <label asp-for="RoomId" class="control-label"></label>
                     <input type="text" asp-for="RoomId" class="form-control" />
                 </div>
-                @*<div class="form-group">
+                <div class="form-group">
                     <label asp-for="OtelId" class="control-label"></label>
                     <input type="text" asp-for="OtelId" class="form-control" />
                 </div>*@
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" />
+                    <input type="submit" value="Kaydet" class="btn btn-default" />
                 </div>
             </form>
+            <hr />
+            <form asp-controller="Cart" asp-action="AddToCart" method="post" class="form-inline">
+                <input type="hidden" name="bookingId" value="@Model.Id" />
+                <div class="input-group mb-3">
+                    <input type="number" name="quantity" class="form-control" value="1" min="1" step="1" style="width:100px;" />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-cart-plus"></i>Sepete Ekle
+                        </button>
+                    </div>
+                </div>
+            </form>
+
         </div>
     </div>
     <div>
-        <a asp-action="Index">Back to List</a>
+        <hr />
+        <a asp-action="Index" class="btn btn-primary btn-sm">Listeye Dön</a>
     </div>
 </div>
 
@@ -49,5 +75,29 @@
 
 
 @section Scripts {
+
+    <script>
+        GetPrice();
+    function GetPrice() {
+
+                var startDate = $('#StartDate').val();
+                var endDate = $('#EndDate').val();
+                var roomId = $('#RoomId').val();
+                var userId = $('#UserId').val();
+
+                 $.ajax({
+                     url: '@Url.Action("GetRoomPrice", "Booking")',
+                     dataType: 'html',
+                     type: "POST",
+                     data: { roomId: roomId, startDate: startDate, endDate: endDate, userId: userId }
+                 }).done(function (result) {
+                     $('#price').html(result);
+                 }).fail(function () {
+                     alert("Oda Fiyatı Bilgisine Ulaşılamadı!")
+                 });
+    };
+
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

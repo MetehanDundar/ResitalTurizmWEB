@@ -12,6 +12,9 @@
     <link rel="stylesheet" type="text/css" href="~/template/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="~/template/slick/slick-theme.css" />
     <link rel="stylesheet" href="~/template/css/templatemo-style.css">
+
+    <link href="~/css/toastr.min.css" rel="stylesheet" />
+
     @RenderSection("Css", false)
 </head>
 <body>
@@ -47,6 +50,47 @@
     <script src="~/template/js/jquery.singlePageNav.min.js"></script>
     <script src="~/template/slick/slick.min.js"></script>
     <script src="~/template/js/jquery.scrollTo.min.js"></script>
+
+
+    <script src="~/js/sweetalert2.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-left",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "3000",
+            "hideDuration": "3000",
+            "timeOut": "10000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+
+    @if (TempData["SuccessNotification"] != null)
+    {
+        @foreach (var item in (IList<string>)TempData["SuccessNotification"])
+        {
+            <script>  toastr.success("@item.ToString()");</script>
+        }
+    }
+    @if (TempData["ErrorNotification"] != null)
+    {
+        @foreach (var item in (IList<string>)TempData["ErrorNotification"])
+        {
+            <script>  toastr.error("@item.ToString()");</script>
+        }
+    }
+
 
     @await RenderSectionAsync("Scripts", required: false)
     @*@RenderSection("Scripts", required: false)*@

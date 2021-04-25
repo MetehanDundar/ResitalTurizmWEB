@@ -8,6 +8,19 @@ namespace ResitalTurizmWEB.DATA.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Carts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Dosyalar",
                 columns: table => new
                 {
@@ -37,20 +50,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Kisiler",
-                columns: table => new
-                {
-                    KisiID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    KisiTipi = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    KisiAdi = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Kisiler", x => x.KisiID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Ofisler",
                 columns: table => new
                 {
@@ -74,19 +73,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OtelKategorileri", x => x.CategoryID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RehberDiller",
-                columns: table => new
-                {
-                    DilID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DilAdi = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RehberDiller", x => x.DilID);
                 });
 
             migrationBuilder.CreateTable(
@@ -295,26 +281,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ucaklar",
-                columns: table => new
-                {
-                    UcakID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UcakTipi = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UcakFirmaID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ucaklar", x => x.UcakID);
-                    table.ForeignKey(
-                        name: "FK_Ucaklar_UcakFirmalar_UcakFirmaID",
-                        column: x => x.UcakFirmaID,
-                        principalTable: "UcakFirmalar",
-                        principalColumn: "UcakFirmaID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Satislar",
                 columns: table => new
                 {
@@ -353,7 +319,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     KonaklamaTipi = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KonaklamaFiyat = table.Column<double>(type: "float", nullable: false),
                     DosyaID = table.Column<int>(type: "int", nullable: true),
-                    KisiID = table.Column<int>(type: "int", nullable: true),
                     OtelID = table.Column<int>(type: "int", nullable: true),
                     GemiID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -373,12 +338,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                         principalColumn: "GemiID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Konaklamalar_Kisiler_KisiID",
-                        column: x => x.KisiID,
-                        principalTable: "Kisiler",
-                        principalColumn: "KisiID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Konaklamalar_Oteller_OtelID",
                         column: x => x.OtelID,
                         principalTable: "Oteller",
@@ -393,6 +352,8 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OtelId = table.Column<int>(type: "int", nullable: false),
+                    Fiyat = table.Column<double>(type: "float", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -403,30 +364,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                         column: x => x.OtelId,
                         principalTable: "Oteller",
                         principalColumn: "OtelID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RehberRehberDil",
-                columns: table => new
-                {
-                    RehberDillerDilID = table.Column<int>(type: "int", nullable: false),
-                    RehberlerTurRehberD = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RehberRehberDil", x => new { x.RehberDillerDilID, x.RehberlerTurRehberD });
-                    table.ForeignKey(
-                        name: "FK_RehberRehberDil_RehberDiller_RehberDillerDilID",
-                        column: x => x.RehberDillerDilID,
-                        principalTable: "RehberDiller",
-                        principalColumn: "DilID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RehberRehberDil_Rehberler_RehberlerTurRehberD",
-                        column: x => x.RehberlerTurRehberD,
-                        principalTable: "Rehberler",
-                        principalColumn: "TurRehberD",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -478,7 +415,8 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     OtelId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    RoomId = table.Column<int>(type: "int", nullable: false)
+                    RoomId = table.Column<int>(type: "int", nullable: false),
+                    Fiyat = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -493,6 +431,33 @@ namespace ResitalTurizmWEB.DATA.Migrations
                         name: "FK_Booking_Room_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Room",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingId = table.Column<int>(type: "int", nullable: false),
+                    CartId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CartItems_Booking_BookingId",
+                        column: x => x.BookingId,
+                        principalTable: "Booking",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartItems_Carts_CartId",
+                        column: x => x.CartId,
+                        principalTable: "Carts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -513,6 +478,16 @@ namespace ResitalTurizmWEB.DATA.Migrations
                 column: "OfisID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CartItems_BookingId",
+                table: "CartItems",
+                column: "BookingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItems_CartId",
+                table: "CartItems",
+                column: "CartId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Gemiler_GemiFirmaID",
                 table: "Gemiler",
                 column: "GemiFirmaID");
@@ -528,11 +503,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                 column: "GemiID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Konaklamalar_KisiID",
-                table: "Konaklamalar",
-                column: "KisiID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Konaklamalar_OtelID",
                 table: "Konaklamalar",
                 column: "OtelID");
@@ -546,11 +516,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                 name: "IX_Rehberler_TurSirketID",
                 table: "Rehberler",
                 column: "TurSirketID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RehberRehberDil_RehberlerTurRehberD",
-                table: "RehberRehberDil",
-                column: "RehberlerTurRehberD");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Room_OtelId",
@@ -601,23 +566,18 @@ namespace ResitalTurizmWEB.DATA.Migrations
                 name: "IX_Turlar_TurSirketID",
                 table: "Turlar",
                 column: "TurSirketID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ucaklar_UcakFirmaID",
-                table: "Ucaklar",
-                column: "UcakFirmaID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Booking");
+                name: "CartItems");
 
             migrationBuilder.DropTable(
                 name: "Konaklamalar");
 
             migrationBuilder.DropTable(
-                name: "RehberRehberDil");
+                name: "Rehberler");
 
             migrationBuilder.DropTable(
                 name: "Satislar");
@@ -632,25 +592,19 @@ namespace ResitalTurizmWEB.DATA.Migrations
                 name: "Turlar");
 
             migrationBuilder.DropTable(
-                name: "Ucaklar");
+                name: "Booking");
 
             migrationBuilder.DropTable(
-                name: "Room");
+                name: "Carts");
 
             migrationBuilder.DropTable(
                 name: "Gemiler");
 
             migrationBuilder.DropTable(
-                name: "Kisiler");
-
-            migrationBuilder.DropTable(
-                name: "RehberDiller");
-
-            migrationBuilder.DropTable(
-                name: "Rehberler");
-
-            migrationBuilder.DropTable(
                 name: "Calisanlar");
+
+            migrationBuilder.DropTable(
+                name: "UcakFirmalar");
 
             migrationBuilder.DropTable(
                 name: "TransferFirmalar");
@@ -662,10 +616,7 @@ namespace ResitalTurizmWEB.DATA.Migrations
                 name: "TurAraclar");
 
             migrationBuilder.DropTable(
-                name: "UcakFirmalar");
-
-            migrationBuilder.DropTable(
-                name: "Oteller");
+                name: "Room");
 
             migrationBuilder.DropTable(
                 name: "GemiFirmalar");
@@ -675,6 +626,9 @@ namespace ResitalTurizmWEB.DATA.Migrations
 
             migrationBuilder.DropTable(
                 name: "TurSirketler");
+
+            migrationBuilder.DropTable(
+                name: "Oteller");
 
             migrationBuilder.DropTable(
                 name: "OtelKategorileri");

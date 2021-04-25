@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ResitalTurizmWEB.BUSINESS.Abstract;
 using ResitalTurizmWEB.BUSINESS.Concrete;
 using ResitalTurizmWEB.DATA.Abstract;
 using ResitalTurizmWEB.DATA.Concrete;
 using ResitalTurizmWEB.ENTITY.Entities;
+using ResitalTurizmWEB.MODELS.Common;
+using ResitalTurizmWEB.UI.Identity;
 using ResitalTurizmWEB.UI.Models;
 using System;
 using System.Collections.Generic;
@@ -19,10 +24,22 @@ namespace ResitalTurizmWEB.UI.Controllers
         private IBookingRepository<Room> roomRepository = new RoomRepository();
         private BookingManager bookingManager = new BookingManager();
         private BookingViewModel bookingViewModel = new BookingViewModel();
-
-        // GET: Booking
-        public IActionResult Index(int? id)
+        private IBookingService _bookingService;
+        private UserManager<User> _userManager;
+        public BookingController(IBookingService bookingService, UserManager<User> userManager)
         {
+            this._bookingService = bookingService;
+            _userManager = userManager;
+        }
+
+        [Authorize(Roles = "admin")]
+        public IActionResult Index(int? id, int? otelId)
+        {
+            var bookingViewModel = new BookingViewModel()
+            {
+                Bookings = _bookingService.GetBookingsByOtel(otelId)
+            };
+            TempData["bookingId"] = otelId;
             bookingViewModel.YearToDisplay = (id == null) ? DateTime.Today.Year : id.Value;
             return View(bookingViewModel);
         }
@@ -44,27 +61,58 @@ namespace ResitalTurizmWEB.UI.Controllers
             return View(booking);
         }
 
-        // GET: Booking/Create
-        public IActionResult Create()
+        [Authorize]
+        public IActionResult Create(int roomId)
         {
+            DateTime today = DateTime.Today;
+            DateTime tomorrow = DateTime.Today.AddDays(1);
+            //var room = _bookingService.GetRoom(roomId);
+            var room = roomRepository.Get(roomId);
+            var model = new Booking()
+            {
+                RoomId = roomId,
+                EndDate = tomorrow,
+                StartDate = today,
+                OtelId = room.OtelId,
+                UserId = _userManager.GetUserId(User),
+        };
+            
             //ViewData["CustomerId"] = new SelectList(customerRepository.GetAll(), "Id", "Name", booking.UserId);
-            return View();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult GetRoomPrice(int roomId, DateTime startDate, DateTime endDate)
+        {
+            var fark = endDate - startDate;
+            var totalDays = fark.TotalDays;
+            var room = roomRepository.Get(roomId);
+            var result = room.Fiyat * totalDays;
+            
+
+            return PartialView("~/Views/Shared/_roomPrice.cshtml", result);
         }
 
         // POST: Bookings/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("StartDate,EndDate,UserId,RoomId")] Booking booking)
+        public IActionResult Create([Bind("StartDate,EndDate,UserId,RoomId,OtelId")] Booking booking)
         {
             if (ModelState.IsValid)
             {
-                bool created = bookingManager.CreateBooking(booking);
+                ServiceCallResult created = bookingManager.CreateBooking(booking);
 
-                if (created)
+                if (created.Success)
                 {
-                    return RedirectToAction(nameof(Index));
+                    TempData["SuccessNotification"] = created.SuccessMessages;
+                    //return RedirectToAction(nameof(Index));
+                    return View(booking);
+                }
+                else
+                {
+                    TempData["ErrorNotification"] = created.ErrorMessages;
+                    return View(booking);
                 }
             }
 
@@ -94,7 +142,7 @@ namespace ResitalTurizmWEB.UI.Controllers
         // POST: Booking/Edit/5
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,StartDate,EndDate,IsActive,UserId,RoomId")] Booking booking)
+        public IActionResult Edit(int id, [Bind("Id,StartDate,EndDate,IsActive,UserId,RoomId,OtelId")] Booking booking)
         {
             if (id != booking.Id)
             {
@@ -119,6 +167,7 @@ namespace ResitalTurizmWEB.UI.Controllers
                     }
                 }
                 return Redirect("~/booking/index");
+                
             }
             //ViewData["CustomerId"] = new SelectList(customerRepository.GetAll(), "Id", "Name", booking.UserId);
             ViewData["RoomId"] = new SelectList(roomRepository.GetAll(), "Id", "Description", booking.RoomId);

@@ -23,6 +23,12 @@
                             <li class="nav-item">
                                 <a href="/home/gemi" class="nav-link">Gemi</a>
                             </li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a href="/orders" class="nav-link">Rezervasyonlarım</a>
+                                </li>
+                            }
                             @if (User.IsInRole("admin"))
                             {
                                 <li class="nav-item dropdown">
@@ -33,6 +39,7 @@
                                         <a asp-controller="admin" asp-action="otellist" class="dropdown-item"><b>Otel</b></a>
                                         <a asp-controller="admin" asp-action="rolelist" class="dropdown-item"><b>Rol</b></a>
                                         <a asp-controller="admin" asp-action="userlist" class="dropdown-item"><b>Kullanıcı</b></a>
+                                        <a asp-controller="booking" asp-action="index" class="dropdown-item"><b>Rezervasyon</b></a>
                                         <a asp-controller="rooms" asp-action="index" class="dropdown-item"><b>Odalar</b></a>
                                     </div>
                                 </li>
@@ -42,6 +49,9 @@
 
                             @if (User.Identity.IsAuthenticated)
                             {
+                                <li class="nav-item">
+                                    <a href="/cart" class="nav-link">Sepet</a>
+                                </li>
                                 <li class="nav-item">
                                     <a asp-controller="account" asp-action="Manage" class="nav-link">@User.Identity.Name</a>
                                 </li>

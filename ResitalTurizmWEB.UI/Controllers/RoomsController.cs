@@ -46,11 +46,9 @@ namespace ResitalTurizmWEB.UI.Controllers
         }
 
         // POST: Rooms/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,OtelId,Description")] Room room)
+        public IActionResult Create([Bind("Id,OtelId,OtelAd,Fiyat,Description,ImageUrl")] Room room)
         {
             if (ModelState.IsValid)
             {
@@ -77,11 +75,9 @@ namespace ResitalTurizmWEB.UI.Controllers
         }
 
         // POST: Rooms/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,OtelId,Description")] Room room)
+        public IActionResult Edit(int id, [Bind("Id,OtelId,OtelAd,Fiyat,Description,ImageUrl")] Room room)
         {
             if (id != room.Id)
             {

@@ -12,15 +12,15 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1 class="h3">Otel Ekle</h1> @*SEO açısından h1, grünüm olarak h3 olacak.*@
+            <h1 class="h3">Otel Ekle</h1> 
             <hr />
         </div>
     </div>
     <form asp-controller="Admin" asp-action="CreateOtel" method="POST">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="OtelAdı"></label> @*asp-for kullandıgım icin labellar arasına string yazmama gerek yok*@
-            <input class="form-control" asp-for="OtelAdı" /> @*asp-for kullandıgım icin type="text" yazmama gerek yok. id, name ve varsa value degerleri de otomatik olarak gelecek*@
+            <label asp-for="OtelAdı"></label> 
+            <input class="form-control" asp-for="OtelAdı" /> 
             <span asp-validation-for="OtelAdı" class="text-danger"></span>
         </div>
         <div class="form-group">

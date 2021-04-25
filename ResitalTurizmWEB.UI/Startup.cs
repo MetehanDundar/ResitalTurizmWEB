@@ -12,6 +12,7 @@ using ResitalTurizmWEB.BUSINESS.Abstract;
 using ResitalTurizmWEB.BUSINESS.Concrete;
 using ResitalTurizmWEB.DATA;
 using ResitalTurizmWEB.DATA.Abstract;
+using ResitalTurizmWEB.DATA.Concrete;
 using ResitalTurizmWEB.DATA.Concrete.EfCore;
 using ResitalTurizmWEB.UI.Identity;
 using System;
@@ -30,7 +31,7 @@ namespace ResitalTurizmWEB.UI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             //var sqlConfiguration = Configuration.GetConnectionString("DatabaseConnection");
@@ -81,7 +82,10 @@ namespace ResitalTurizmWEB.UI
 
 
             services.AddScoped<IOtelRepository, EfCoreOtelRepository>();
+            services.AddScoped<IRoomsRepository, RoomRepository>();
             services.AddScoped<ICategoryOtelRepository, EfCoreCategoryOtelRepository>();
+            services.AddScoped<ICartRepository, EfCoreCartRepository>();
+            services.AddScoped<IOrderRepository, EfCoreOrderRepository>();
 
             services.AddDbContext<ResitalContext>(option =>
             {
@@ -89,15 +93,18 @@ namespace ResitalTurizmWEB.UI
                 option.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
-
+            services.AddScoped<IBookingService, BookingManager>();
+            services.AddScoped<IRoomService, RoomsManager>();
             services.AddScoped<IOtelService, OtelManager>();
             services.AddScoped<ICategoryOtelService, CategoryOtelManager>();
+            services.AddScoped<ICartService, CartManager>();
+            services.AddScoped<IOrderService, OrderManager>();
             services.AddControllersWithViews();
             services.AddHttpClient();
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         //appsettings.json icerisinden bir bilgiye ihtiyacým oldugu icin IConfiguration parametresi ekledim
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, UserManager<User> userManager,RoleManager<IdentityRole> roleManager)
         {
@@ -123,6 +130,30 @@ namespace ResitalTurizmWEB.UI
             SeedDatabase.Seed(app); // Burayý SeedDatabase'de IApplciationBuilder olarak eklediðimiz için bu þekilde kullanuyoýruz Hangi uygulamada bu Seed metodunu kullanacak? Burada da diyoruz ki iþte bu execute edilen uygulamada.
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                   name: "orders",
+                   pattern: "orders",
+                   defaults: new { controller = "Cart", action = "GetOrders" }
+               );
+
+                endpoints.MapControllerRoute(
+                   name: "checkout",
+                   pattern: "checkout",
+                   defaults: new { controller = "Cart", action = "Checkout" }
+               );
+
+                endpoints.MapControllerRoute(
+                   name: "cart",
+                   pattern: "cart",
+                   defaults: new { controller = "Cart", action = "Index" }
+               );
+
+                endpoints.MapControllerRoute(
+                   name: "bookinglist",
+                   pattern: "booking/index/{id?}",
+                   defaults: new { controller = "Booking", action = "Index" }
+               );
+
                 endpoints.MapControllerRoute(
                    name: "adminuseredit",
                    pattern: "admin/user/{id?}",
@@ -180,6 +211,13 @@ namespace ResitalTurizmWEB.UI
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "rooms",
+                    pattern: "rooms/{otel?}",
+                    defaults: new { controller = "Room", action = "List" }
+                );
+
             });
         }
     }

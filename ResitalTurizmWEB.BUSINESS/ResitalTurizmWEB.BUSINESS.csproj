@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ResitalTurizmWEB.DATA\ResitalTurizmWEB.DATA.csproj" />
     <ProjectReference Include="..\ResitalTurizmWEB.ENTITY\ResitalTurizmWEB.ENTITY.csproj" />
+    <ProjectReference Include="..\ResitalTurizmWEB.MODELS\ResitalTurizmWEB.MODELS.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,9 +5,8 @@
 }
 
 <div class="container">
-    <h2>Create</h2>
+    <h2>Oda Ekle</h2>
 
-    <h4>Room</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -17,6 +16,21 @@
                     <label asp-for="OtelId" class="control-label"></label>
                     <input asp-for="OtelId" class="form-control" />
                     <span asp-validation-for="OtelId" class="text-danger"></span>
+                </div>
+                @*<div class="form-group">
+        <label asp-for="OtelAd" class="control-label"></label>
+        <input asp-for="OtelAd" class="form-control" />
+        <span asp-validation-for="OtelAd" class="text-danger"></span>
+             </div>*@
+                <div class="form-group">
+                    <label asp-for="Fiyat" class="control-label"></label>
+                    <input asp-for="Fiyat" class="form-control" />
+                    <span asp-validation-for="Fiyat" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageUrl" class="control-label"></label>
+                    <input asp-for="ImageUrl" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Description" class="control-label"></label>
@@ -31,7 +45,7 @@
     </div>
 
     <div>
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="btn btn-primary btn-sm">Listeye Dön</a>
     </div>
 </div>
 

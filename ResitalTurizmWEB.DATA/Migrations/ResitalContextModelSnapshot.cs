@@ -19,21 +19,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
-            modelBuilder.Entity("RehberRehberDil", b =>
-                {
-                    b.Property<int>("RehberDillerDilID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RehberlerTurRehberD")
-                        .HasColumnType("int");
-
-                    b.HasKey("RehberDillerDilID", "RehberlerTurRehberD");
-
-                    b.HasIndex("RehberlerTurRehberD");
-
-                    b.ToTable("RehberRehberDil");
-                });
-
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Booking", b =>
                 {
                     b.Property<int>("Id")
@@ -43,6 +28,9 @@ namespace ResitalTurizmWEB.DATA.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("Fiyat")
+                        .HasColumnType("float");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -56,8 +44,8 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -68,36 +56,44 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.ToTable("Booking");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Calisan", b =>
+            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Cart", b =>
                 {
-                    b.Property<int>("CalisanID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("CalisanAd")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CalisanAdres")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-                    b.Property<int?>("CalisanCariKod")
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.CartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("BookingId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CalisanGorev")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CalisanSoyad")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("OfisID")
+                    b.Property<int>("CartId")
                         .HasColumnType("int");
 
-                    b.HasKey("CalisanID");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
-                    b.HasIndex("OfisID");
+                    b.HasKey("Id");
 
-                    b.ToTable("Calisanlar");
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("CartId");
+
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.CategoryOtel", b =>
@@ -113,27 +109,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.HasKey("CategoryID");
 
                     b.ToTable("OtelKategorileri");
-                });
-
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Dosya", b =>
-                {
-                    b.Property<int>("DosyaID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<float>("DosyaAlisFiyat")
-                        .HasColumnType("real");
-
-                    b.Property<float>("DosyaSatisFiyat")
-                        .HasColumnType("real");
-
-                    b.Property<string>("DosyaTipi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DosyaID");
-
-                    b.ToTable("Dosyalar");
                 });
 
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Gemi", b =>
@@ -183,75 +158,86 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.ToTable("GemiFirmalar");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Kisi", b =>
+            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Order", b =>
                 {
-                    b.Property<int>("KisiID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("KisiAdi")
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("KisiTipi")
+                    b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("KisiID");
+                    b.Property<string>("ConversationId")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Kisiler");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderState")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Konaklama", b =>
+            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.OrderItem", b =>
                 {
-                    b.Property<int>("KonaklamaID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("DosyaID")
+                    b.Property<int>("BookingId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GemiID")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("KisiID")
-                        .HasColumnType("int");
-
-                    b.Property<double>("KonaklamaFiyat")
+                    b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<string>("KonaklamaTipi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("OtelID")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("KonaklamaID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("DosyaID");
+                    b.HasIndex("BookingId");
 
-                    b.HasIndex("GemiID");
+                    b.HasIndex("OrderId");
 
-                    b.HasIndex("KisiID");
-
-                    b.HasIndex("OtelID");
-
-                    b.ToTable("Konaklamalar");
-                });
-
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Ofis", b =>
-                {
-                    b.Property<int>("OfisID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("OfisAdres")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("OfisID");
-
-                    b.ToTable("Ofisler");
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Otel", b =>
@@ -312,21 +298,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.ToTable("Rehberler");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.RehberDil", b =>
-                {
-                    b.Property<int>("DilID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("DilAdi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DilID");
-
-                    b.ToTable("RehberDiller");
-                });
-
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -335,6 +306,12 @@ namespace ResitalTurizmWEB.DATA.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Fiyat")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OtelId")
@@ -347,118 +324,12 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.ToTable("Room");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Satis", b =>
-                {
-                    b.Property<int>("SatisID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int?>("DosyaID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("KonaklamaTarihBaslangic")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("KonaklamaTarihBitis")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PnrNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SaticiCalisanCalisanID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SatisCariKod")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SatisID");
-
-                    b.HasIndex("DosyaID");
-
-                    b.HasIndex("SaticiCalisanCalisanID");
-
-                    b.ToTable("Satislar");
-                });
-
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.SeferBolge", b =>
-                {
-                    b.Property<int>("UcakSeferID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("UCakSeferBolgesi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UcakFirmaID")
-                        .HasColumnType("int");
-
-                    b.HasKey("UcakSeferID");
-
-                    b.HasIndex("UcakFirmaID");
-
-                    b.ToTable("SeferBolgeler");
-                });
-
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Transfer", b =>
-                {
-                    b.Property<int>("TransferID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int?>("DosyaID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TransferFirmaID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransferFiyat")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TransferGüzergah")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TransferID");
-
-                    b.HasIndex("DosyaID");
-
-                    b.HasIndex("TransferFirmaID");
-
-                    b.ToTable("Transferler");
-                });
-
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.TransferFirma", b =>
-                {
-                    b.Property<int>("TransferFirmaID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("BolgeBilgisi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TransferFirmaAdi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TransferFirmaAdres")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TransferFirmaID");
-
-                    b.ToTable("TransferFirmalar");
-                });
-
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Tur", b =>
                 {
                     b.Property<int>("TurID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
-
-                    b.Property<int?>("DosyaID")
-                        .HasColumnType("int");
 
                     b.Property<string>("TurAdi")
                         .HasColumnType("nvarchar(max)");
@@ -479,8 +350,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("TurID");
-
-                    b.HasIndex("DosyaID");
 
                     b.HasIndex("TurAracID");
 
@@ -530,59 +399,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.ToTable("TurSirketler");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Ucak", b =>
-                {
-                    b.Property<int>("UcakID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int?>("UcakFirmaID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UcakTipi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UcakID");
-
-                    b.HasIndex("UcakFirmaID");
-
-                    b.ToTable("Ucaklar");
-                });
-
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.UcakFirma", b =>
-                {
-                    b.Property<int>("UcakFirmaID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("UcakFirmaAdi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UcakFirmaAdres")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UcakFirmaID");
-
-                    b.ToTable("UcakFirmalar");
-                });
-
-            modelBuilder.Entity("RehberRehberDil", b =>
-                {
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.RehberDil", null)
-                        .WithMany()
-                        .HasForeignKey("RehberDillerDilID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Rehber", null)
-                        .WithMany()
-                        .HasForeignKey("RehberlerTurRehberD")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Booking", b =>
                 {
                     b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Otel", "Otel")
@@ -600,13 +416,23 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Calisan", b =>
+            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.CartItem", b =>
                 {
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Ofis", "Ofis")
-                        .WithMany("Calisanlar")
-                        .HasForeignKey("OfisID");
+                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Booking", "Booking")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Ofis");
+                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Gemi", b =>
@@ -618,31 +444,23 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.Navigation("GemiFirma");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Konaklama", b =>
+            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.OrderItem", b =>
                 {
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Dosya", "Dosya")
-                        .WithMany("Konaklamalar")
-                        .HasForeignKey("DosyaID");
-
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Gemi", "Gemi")
+                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Booking", "Booking")
                         .WithMany()
-                        .HasForeignKey("GemiID");
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Kisi", "Kisi")
-                        .WithMany()
-                        .HasForeignKey("KisiID");
+                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Otel", "Otel")
-                        .WithMany()
-                        .HasForeignKey("OtelID");
+                    b.Navigation("Booking");
 
-                    b.Navigation("Dosya");
-
-                    b.Navigation("Gemi");
-
-                    b.Navigation("Kisi");
-
-                    b.Navigation("Otel");
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Otel", b =>
@@ -676,51 +494,8 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.Navigation("Otel");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Satis", b =>
-                {
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Dosya", "Dosya")
-                        .WithMany()
-                        .HasForeignKey("DosyaID");
-
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Calisan", "SaticiCalisan")
-                        .WithMany("Satislar")
-                        .HasForeignKey("SaticiCalisanCalisanID");
-
-                    b.Navigation("Dosya");
-
-                    b.Navigation("SaticiCalisan");
-                });
-
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.SeferBolge", b =>
-                {
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.UcakFirma", "UcakFirma")
-                        .WithMany("UcakSeferBolgeler")
-                        .HasForeignKey("UcakFirmaID");
-
-                    b.Navigation("UcakFirma");
-                });
-
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Transfer", b =>
-                {
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Dosya", "Dosya")
-                        .WithMany("Transferler")
-                        .HasForeignKey("DosyaID");
-
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.TransferFirma", "TransferFirma")
-                        .WithMany("Transferler")
-                        .HasForeignKey("TransferFirmaID");
-
-                    b.Navigation("Dosya");
-
-                    b.Navigation("TransferFirma");
-                });
-
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Tur", b =>
                 {
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.Dosya", "Dosya")
-                        .WithMany("Turlar")
-                        .HasForeignKey("DosyaID");
-
                     b.HasOne("ResitalTurizmWEB.ENTITY.Entities.TurArac", "TurArac")
                         .WithMany("Turlar")
                         .HasForeignKey("TurAracID");
@@ -728,8 +503,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.HasOne("ResitalTurizmWEB.ENTITY.Entities.TurSirket", "TurSirket")
                         .WithMany("Turlar")
                         .HasForeignKey("TurSirketID");
-
-                    b.Navigation("Dosya");
 
                     b.Navigation("TurArac");
 
@@ -745,18 +518,9 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.Navigation("TurSirket");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Ucak", b =>
+            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Cart", b =>
                 {
-                    b.HasOne("ResitalTurizmWEB.ENTITY.Entities.UcakFirma", "UcakFirma")
-                        .WithMany("Ucaklar")
-                        .HasForeignKey("UcakFirmaID");
-
-                    b.Navigation("UcakFirma");
-                });
-
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Calisan", b =>
-                {
-                    b.Navigation("Satislar");
+                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.CategoryOtel", b =>
@@ -764,23 +528,14 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.Navigation("Oteller");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Dosya", b =>
-                {
-                    b.Navigation("Konaklamalar");
-
-                    b.Navigation("Transferler");
-
-                    b.Navigation("Turlar");
-                });
-
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.GemiFirma", b =>
                 {
                     b.Navigation("Gemiler");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Ofis", b =>
+            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Order", b =>
                 {
-                    b.Navigation("Calisanlar");
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.Otel", b =>
@@ -795,11 +550,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.Navigation("Bookings");
                 });
 
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.TransferFirma", b =>
-                {
-                    b.Navigation("Transferler");
-                });
-
             modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.TurArac", b =>
                 {
                     b.Navigation("Turlar");
@@ -812,13 +562,6 @@ namespace ResitalTurizmWEB.DATA.Migrations
                     b.Navigation("TurAraclar");
 
                     b.Navigation("Turlar");
-                });
-
-            modelBuilder.Entity("ResitalTurizmWEB.ENTITY.Entities.UcakFirma", b =>
-                {
-                    b.Navigation("Ucaklar");
-
-                    b.Navigation("UcakSeferBolgeler");
                 });
 #pragma warning restore 612, 618
         }

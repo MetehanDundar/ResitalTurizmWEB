@@ -5,11 +5,11 @@ using System.Text;
 
 namespace ResitalTurizmWEB.ENTITY.Entities
 {
-    public class RehberDil
+    public class Cart
     {
         [Key]
-        public int DilID { get; set; }
-        public string DilAdi { get; set; }
-        public virtual List<Rehber> Rehberler { get; set; }
+        public int Id { get; set; }
+        public string UserId { get; set; }
+        public List<CartItem> CartItems { get; set; }
     }
 }

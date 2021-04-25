@@ -52,13 +52,15 @@ namespace ResitalTurizmWEB.DATA.Concrete.EfCore
             }
         }
 
-        public List<Otel> GetSearchResult(string searchString,DateTime startDate, DateTime endDate) //TODO: diğer arama kriterleri eklenecek.
+        public List<Otel> GetSearchResult(string searchString,DateTime startDate, DateTime endDate) 
         {
             using (var context = new ResitalContext())
             {
                 var otels = context
                     .Oteller
-                    .Where(i => i.IsApproved && (i.OtelAdı.ToLower().Contains(searchString)) || (i.OtelAdres.ToLower().Contains(searchString)))
+                    .Include(x => x.Bookings)
+                    .Where(i=> i.Bookings.Count(x => !(x.EndDate > startDate && x.StartDate < endDate)) < i.Rooms.Count() 
+                     &&  i.IsApproved && (i.OtelAdı.ToLower().Contains(searchString)) || (i.OtelAdres.ToLower().Contains(searchString)))
                     .AsQueryable();
                 
                 return otels.ToList();

@@ -3015,7 +3015,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Iyzipay" Version="2.1.39" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -3028,6 +3030,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ResitalTurizmWEB.BUSINESS\ResitalTurizmWEB.BUSINESS.csproj" />
     <ProjectReference Include="..\ResitalTurizmWEB.DATA\ResitalTurizmWEB.DATA.csproj" />
+    <ProjectReference Include="..\ResitalTurizmWEB.MODELS\ResitalTurizmWEB.MODELS.csproj" />
   </ItemGroup>
 
 </Project>

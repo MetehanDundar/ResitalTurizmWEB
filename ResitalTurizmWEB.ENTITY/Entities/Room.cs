@@ -12,6 +12,12 @@ namespace ResitalTurizmWEB.ENTITY.Entities
         public int Id { get; set; }
         [ForeignKey("Otel")]
         public int OtelId { get; set; }
+        //public string OtelAd { get; set; }
+        //public DateTime GirisTarih { get; set; }
+        //public DateTime CikisTarih { get; set; }
+        public double Fiyat { get; set; }
+        //public bool Doluluk { get; set; }
+        public string ImageUrl { get; set; }
         public string Description { get; set; }
         public List<Booking> Bookings { get; set; }
         public Otel Otel { get; set; }

@@ -1,0 +1,112 @@
+﻿@model OrderModel
+
+<div class="container">
+    <h1>Ödeme</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <h4 class="mb-3">Sipariş Detayı</h4>
+            <form method="post" asp-controller="Cart" asp-action="Checkout">
+                <input type="hidden" name="cartId" value="0" />
+                <div class="col-mb-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label asp-for="FirstName">İsim</label>
+                            <input asp-for="FirstName" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LastName">Soyisim</label>
+                            <input asp-for="LastName" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label asp-for="Address">Adres</label>
+                            <textarea asp-for="Address" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label asp-for="City">Şehir</label>
+                            <input asp-for="City" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Phone">Telefon No</label>
+                            <input asp-for="Phone" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Email">Mail</label>
+                            <input asp-for="Email" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <h4 class="mb-3">Ödeme Bilgileri</h4>
+                <hr class="mb-3" />
+                <div class="col-mb-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label asp-for="CardName">Kart</label>
+                            <input asp-for="CardName" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CardNumber">Kart No</label>
+                            <input asp-for="CardNumber" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label asp-for="ExpirationMonth"></label>
+                            <input asp-for="ExpirationMonth" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="ExpirationYear"></label>
+                            <input asp-for="ExpirationYear" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Cvc"></label>
+                            <input asp-for="Cvc" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <h4 class="mb-3">
+                <span>Özet Bilgiler</span>
+            </h4>
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <strong><b>Booking Id</b></strong>
+                    </div>
+                    <strong><b>Fiyat</b></strong>
+                </li>
+
+                @foreach (var item in Model.CartModel.CartItems)
+                {
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div>
+                            <h6>@item.BookingId</h6>
+                        </div>
+                        <span class="text-muted">@item.Price.ToString("c")</span>
+                    </li>
+                }
+
+
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <span>Toplam</span>
+                    </div>
+                    <strong>@Model.CartModel.TotalPrice().ToString("c")</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

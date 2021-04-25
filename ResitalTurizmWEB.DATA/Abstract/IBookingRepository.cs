@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ResitalTurizmWEB.ENTITY.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,5 +12,6 @@ namespace ResitalTurizmWEB.DATA.Abstract
         void Add(T entity);
         void Edit(T entity);
         void Remove(int id);
+        List<Booking> GetBookingsByOtel(int? otelId);
     }
 }

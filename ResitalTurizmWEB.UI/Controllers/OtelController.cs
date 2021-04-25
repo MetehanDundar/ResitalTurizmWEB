@@ -1,17 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ResitalTurizmWEB.BUSINESS.Abstract;
+using ResitalTurizmWEB.DATA.Concrete.EfCore;
 using ResitalTurizmWEB.ENTITY;
 using ResitalTurizmWEB.ENTITY.Entities;
 using ResitalTurizmWEB.UI.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ResitalTurizmWEB.UI.Controllers
 {
+    
     public class OtelController : Controller
     {
+
+        ResitalContext db = new ResitalContext();
+
         private IOtelService _otelService;
         public OtelController(IOtelService otelService)
         {
@@ -50,7 +56,7 @@ namespace ResitalTurizmWEB.UI.Controllers
             return View(new OtelDetailModel
             {
                 Otel = otel,
-                CategoryOtel = otel.CategoryOtel //kategori bilgisini kategori tablosundan çekemedim otel tablosundan çektim
+                CategoryOtel = otel.CategoryOtel 
             });
         }
 
@@ -63,7 +69,6 @@ namespace ResitalTurizmWEB.UI.Controllers
         [HttpPost]
         public IActionResult Create(Otel o) 
         {
-            //OtelRepository.AddOtel(o);  TO DO
             return View();
         }
 
@@ -75,5 +80,18 @@ namespace ResitalTurizmWEB.UI.Controllers
             };
             return View(otelViewModel);
         }
+
+        //public IActionResult Odalar(string name)
+        //{
+
+        //        var rooms = db.Room
+        //            .Where(i => (string.IsNullOrEmpty(name) || i.OtelAd.ToLower() == name.ToLower()));
+        //        var otel = db.Oteller
+        //               .Where(i => (string.IsNullOrEmpty(name) || i.OtelAdı.ToLower() == name.ToLower())).Select(i => i.OtelAdı).FirstOrDefault();
+        //            ViewBag.otel = otel;
+                 
+        //        return View(rooms);
+            
+        //}
     }
 }

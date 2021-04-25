@@ -1,6 +1,8 @@
-﻿using ResitalTurizmWEB.DATA.Abstract;
+﻿using ResitalTurizmWEB.BUSINESS.Abstract;
+using ResitalTurizmWEB.DATA.Abstract;
 using ResitalTurizmWEB.DATA.Concrete;
 using ResitalTurizmWEB.ENTITY.Entities;
+using ResitalTurizmWEB.MODELS.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,26 +10,58 @@ using System.Text;
 
 namespace ResitalTurizmWEB.BUSINESS.Concrete
 {
-    public class BookingManager
+    public class BookingManager : IBookingService
     {
         private readonly IBookingRepository<Booking> bookingRepository = new BookingRepository();
         private readonly IBookingRepository<Room> roomRepository = new RoomRepository();
 
-        public bool CreateBooking(Booking booking)
+        public ServiceCallResult CreateBooking(Booking booking)
         {
-            int roomId = FindAvailableRoom(booking.StartDate, booking.EndDate);
+            //int roomId = FindAvailableRoom(booking.StartDate, booking.EndDate);
 
-            if (roomId >= 0)
+            //if (roomId >= 0)
+            //{
+            //    booking.RoomId = roomId;
+            //    booking.IsActive = true;
+            //    bookingRepository.Add(booking);
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+
+            var callResult = new ServiceCallResult() { Success = false };
+
+            if (booking.StartDate < DateTime.Today)
             {
-                booking.RoomId = roomId;
-                booking.IsActive = true;
-                bookingRepository.Add(booking);
-                return true;
+                callResult.ErrorMessages.Add("Geçmiş tarihli rezervasyon yapılamaz!");
+                return callResult;
             }
-            else
+
+            if (booking.StartDate > booking.EndDate)
             {
-                return false;
+                callResult.ErrorMessages.Add("Hatalı Tarih Seçimi");
+                return callResult;
             }
+
+            var activeBooking = bookingRepository.GetAll().Where(x => x.RoomId == booking.RoomId && (x.EndDate > booking.StartDate && x.StartDate < booking.EndDate));
+            if (activeBooking.Count() > 0)
+            {
+                callResult.ErrorMessages.Add("Bu tarih aralığında odamız doludur!");
+                return callResult;
+            }
+
+            var fark = booking.EndDate - booking.StartDate;
+            var totalDays = fark.TotalDays;
+            var room = roomRepository.Get(booking.RoomId);
+            booking.Fiyat = room.Fiyat * totalDays;
+
+            callResult.Success = true;
+            callResult.SuccessMessages.Add("Rezervasyonunuz oluşturuldu. 'Sepete Ekle' butonuna tıklayınız.");
+            booking.IsActive = true;
+            bookingRepository.Add(booking);
+            return callResult;
         }
 
         public int FindAvailableRoom(DateTime startDate, DateTime endDate)
@@ -69,6 +103,11 @@ namespace ResitalTurizmWEB.BUSINESS.Concrete
                 }
             }
             return fullyOccupiedDates;
+        }
+
+        public List<Booking> GetBookingsByOtel(int? otelId)
+        {
+            return bookingRepository.GetBookingsByOtel(otelId);
         }
 
     }

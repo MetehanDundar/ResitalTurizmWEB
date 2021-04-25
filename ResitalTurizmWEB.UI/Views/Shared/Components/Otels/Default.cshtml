@@ -1,0 +1,14 @@
+﻿@model List<Otel>
+
+<div class="list-group">
+
+    @foreach (var item in Model)
+    {
+        <a asp-controller="Booking"
+           asp-action="Index"
+           asp-route-id="@item.OtelID"
+           class="list-group-item list-group-item-action @(ViewBag.SelectedOtel == item.OtelID?"active":"")">
+            @item.OtelID
+        </a>
+    }
+</div>

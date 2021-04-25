@@ -79,7 +79,7 @@ namespace ResitalTurizmWEB.UI.Controllers
             return View(model);
         }
 
-            public IActionResult UserList()
+        public IActionResult UserList()
         {
             return View(_userManager.Users);
         }
@@ -214,7 +214,7 @@ namespace ResitalTurizmWEB.UI.Controllers
                     Message = $"{entity.OtelAdı} isimli Otel eklendi.",
                     AlertType = "success"
                 };
-                TempData["message"] = JsonConvert.SerializeObject(msg); //Json formatını kullanabilmek icin newtonsoft nuget arat. Proeye yükledim.Json kullanmadıgımda Tempdata'dan serileştirme hatası aldım.
+                TempData["message"] = JsonConvert.SerializeObject(msg); //Json formatını kullanabilmek icin newtonsoft nuget arat. Projeye yükledim.Json kullanmadıgımda Tempdata'dan serileştirme hatası aldım.
                 return RedirectToAction("OtelList");
             }
             return View(model);

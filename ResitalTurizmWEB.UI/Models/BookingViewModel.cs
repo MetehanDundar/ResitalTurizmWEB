@@ -21,7 +21,16 @@ namespace ResitalTurizmWEB.UI.Models
             {
                 return bookingRepository.GetAll();
             }
+            set { }
         }
+
+
+        //public List<Booking> GetBookingsByOtel(int? otelId)
+        //{
+        //    return bookingRepository.GetBookingsByOtel(otelId);
+        //}
+
+
 
         public int YearToDisplay
         {
@@ -56,6 +65,8 @@ namespace ResitalTurizmWEB.UI.Models
             }
             return occupied;
         }
+
+        
 
         public List<DateTime> FullyOccupiedDates
         {

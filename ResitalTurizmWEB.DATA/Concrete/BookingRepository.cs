@@ -46,5 +46,20 @@ namespace ResitalTurizmWEB.DATA.Concrete
             db.Booking.Remove(booking);
             db.SaveChanges();
         }
+
+        public List<Booking> GetBookingsByOtel(int? otelId)
+        {
+            using (var context = new ResitalContext())
+            {
+                var bookings = context.Booking.Where(i => i.IsActive).AsQueryable();
+                if (otelId != null)
+                {
+                    bookings = bookings
+                        .Include(i => i.Otel)
+                        .Where(i => i.OtelId == otelId);
+                }
+                return bookings.ToList();
+            }
+        }
     }
 }

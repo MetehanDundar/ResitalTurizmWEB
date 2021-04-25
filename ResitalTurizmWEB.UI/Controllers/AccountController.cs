@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ResitalTurizmWEB.BUSINESS.Abstract;
 using ResitalTurizmWEB.UI.Identity;
 using ResitalTurizmWEB.UI.Models;
 using System;
@@ -15,11 +16,13 @@ namespace ResitalTurizmWEB.UI.Controllers
     {
         private UserManager<User> _userManager; //kullanıcı olusturma, login, parola sıfırlama gibi islemler için
         private SignInManager<User> _signInManager; //cookie olaylarını yönetecek
+        private ICartService _cartService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ICartService cartService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _cartService = cartService;
         }
 
         public IActionResult Login(string ReturnUrl=null) //varsayılan null (Post'ta null kontrolü yapabilmem için)
@@ -83,7 +86,9 @@ namespace ResitalTurizmWEB.UI.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                //generate token
+                //cart objesini olustur
+                _cartService.InitializeCart(user.Id);
+                //token üret
                 return RedirectToAction("Login", "Account");
             }
 

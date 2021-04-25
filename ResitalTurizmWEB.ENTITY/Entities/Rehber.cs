@@ -12,6 +12,5 @@ namespace ResitalTurizmWEB.ENTITY.Entities
         public string TurRehberAdi { get; set; }
         public string TurRehberAdres { get; set; }
         public virtual TurSirket TurSirket { get; set; }
-        public virtual List<RehberDil> RehberDiller { get; set; }
     }
 }

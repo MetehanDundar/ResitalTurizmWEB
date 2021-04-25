@@ -3,10 +3,13 @@
 @{ ViewData["Title"] = "Details"; }
 
 <div class="container">
-    <h2>Details</h2>
+    <h2>Detaylar</h2>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Düzenle</a> |
+        <a asp-action="Index" class="btn btn-primary btn-sm">Listeye Dön</a>
+    </div>
     <div class="row">
         <div>
-            <h4>Booking</h4>
             <hr />
             <dl class="dl-horizontal">
                 <dt>
@@ -33,12 +36,12 @@
                 <dd>
                     @Html.DisplayFor(model => model.UserId)
                 </dd>
-                @*<dt>
+                <dt>
                     @Html.DisplayNameFor(model => model.OtelId)
                 </dt>
                 <dd>
                     @Html.DisplayFor(model => model.OtelId)
-                </dd>*@
+                </dd>
                 <dt>
                     @Html.DisplayNameFor(model => model.RoomId)
                 </dt>
@@ -46,10 +49,6 @@
                     @Html.DisplayFor(model => model.RoomId)
                 </dd>
             </dl>
-        </div>
-        <div>
-            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-            <a asp-action="Index">Back to List</a>
         </div>
     </div>
 

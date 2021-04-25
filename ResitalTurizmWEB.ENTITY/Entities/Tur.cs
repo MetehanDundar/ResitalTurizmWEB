@@ -15,7 +15,6 @@ namespace ResitalTurizmWEB.ENTITY.Entities
         public DateTime TurBitis { get; set; }
         public virtual TurSirket TurSirket { get; set; }
         public virtual TurArac TurArac { get; set; }
-        public virtual Dosya Dosya { get; set; }
 
     }
 }

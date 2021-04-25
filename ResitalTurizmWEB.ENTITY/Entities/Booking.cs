@@ -15,9 +15,10 @@ namespace ResitalTurizmWEB.ENTITY.Entities
         public bool IsActive { get; set; }
         [ForeignKey("Otel")]
         public int? OtelId { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [ForeignKey("Room")]
         public int RoomId { get; set; }
+        public double Fiyat { get; set; }
         public Room Room { get; set; }
         public Otel Otel { get; set; }
     }

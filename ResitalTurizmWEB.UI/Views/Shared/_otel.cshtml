@@ -10,8 +10,10 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>_otel</title>
+    
 </head>
 <body>
+    
     <div class="card mb-1">
         <img class="card-img-top" src="~/template/img/@Model.ImageUrl" alt="" />
         <div class="card-body">
@@ -21,9 +23,10 @@
             </small>
         </div>
         <div class="card-footer text-center">
-            <a asp-controller="Otel" asp-action="Details" asp-route-id="@Model.OtelID" class="btn btn-primary btn-sm">Detaylar
-                </a>
-            <a asp-controller="Booking" asp-action="Index" asp-route-id="@Model.OtelID" class="btn btn-primary btn-sm">Rezervasyon</a>
+            <a asp-controller="Otel" asp-action="Details" asp-route-id="@Model.OtelID" class="btn btn-primary btn-sm">
+                Detaylar
+            </a>
+            <a asp-controller="Room" asp-action="List" asp-route-otelId="@Model.OtelID" class="btn btn-primary btn-sm">Odalar</a>
         </div>
     </div>
 </body>

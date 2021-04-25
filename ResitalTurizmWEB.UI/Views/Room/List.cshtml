@@ -1,0 +1,26 @@
+﻿@model ResitalTurizmWEB.UI.Models.RoomListViewModel
+
+@{
+    
+    ViewData["Title"] = "List";
+}
+
+
+<h2>@ViewBag.otel</h2>
+<h2>@ViewBag.SelectedOtel</h2>
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-9">
+            <div class="row">
+                @foreach (var room in Model.Odalar)
+                {
+                    <div class="col-md-4">
+                        @await Html.PartialAsync("_room", room)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -3,37 +3,45 @@
 @{ ViewData["Title"] = "Index";
                 int year = Model.YearToDisplay; }
 
-<h2>Bookings</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<p>
-    <a asp-action="Index" asp-route-id="@(year+1)">Next year</a>
-    <a asp-action="Index" asp-route-id="@(year-1)">Previous year</a>
-</p>
 
-@*Calender display*@
-<table class="table">
+<form asp-action="Index">
+    <input type="hidden" asp-for="@TempData["bookingId"]" />
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Rezervasyonlar</h2>
+            <p>
+                <a asp-action="Create" class="btn btn-primary btn-sm">Yeni Rezervasyon</a>
+            </p>
+        </div>
+        <div class="col-md-9">
+            <table class="table">
+                <tr>
+                    <th>@year</th>
+                    @for (int day = 1; day <= 31; day++)
+                    {
+        <th>@day</th>}
+                </tr>
+
+                @for (int month = 1; month <= 12; month++)
+                {
     <tr>
-        <th>@year</th>
+        <td>
+            @Model.GetMonthName(month)
+        </td>
+
         @for (int day = 1; day <= 31; day++)
         {
-<th>@day</th>}
-    </tr>
-
-    @for (int month = 1; month <= 12; month++)
-    {
-<tr>
-    <td>
-        @Model.GetMonthName(month)
-    </td>
-
-    @for (int day = 1; day <= 31; day++)
-    {
 <td @if (Model.DateIsOccupied(year, month, day)) { <text> class="bg-danger" </text> }></td>}
-</tr>}
-</table>
+    </tr>}
+            </table>
+        </div>
+    </div>
+</form>
+    
+
+
+
 
 
 <table class="table">
@@ -43,23 +51,23 @@
                 <h4>ID</h4>
             </th>
             <th>
-                <h4>Start date</h4>
+                <h4>Başlangıç Tarihi</h4>
             </th>
             <th>
-                <h4>End date</h4>
+                <h4>Bitiş Tarihi</h4>
             </th>
             <th>
-                <h4>IsActive</h4>
+                <h4>Aktif</h4>
             </th>
             <th>
-                <h4>Customer Id</h4>
+                <h4>Müşteri ID</h4>
             </th>
             <th>
-                <h4>Room Id</h4>
+                <h4>Room ID</h4>
             </th>
-            @*<th>
-                <h4>Otel Id</h4>
-            </th>*@
+            <th>
+                <h4>Otel ID</h4>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -81,17 +89,31 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UserId)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.OtelId)
-            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Room.Id)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.OtelId)
             </td>
-        </tr>}
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Düzenle</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Detaylar</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Sil</a>
+
+                @*<form asp-controller="Cart" asp-action="AddToCart" method="post" class="form-inline">
+                    <input type="hidden" name="bookingId" value="@Model.BookingId" />
+                    <div class="input-group mb-3">
+                        <input type="number" name="quantity" class="form-control" value="1" min="1" step="1" style="width:100px;" />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-cart-plus"></i>Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </form>*@
+
+            </td>
+        </tr>
+        }
     </tbody>
 </table>
